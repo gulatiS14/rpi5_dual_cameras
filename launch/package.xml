@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ros2_dual_camera</name>
+  <version>0.0.1</version>
+  <description>ROS 2 package for dual camera publishing using camera_ros.</description>
+  <maintainer email="your_email@example.com">Your Name</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclpy</depend>
+  <depend>camera_ros</depend>
+  <exec_depend>launch</exec_depend>
+</package>
