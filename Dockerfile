@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-colcon-meson \
     libboost-dev \
+    libopencv-dev \          # OpenCV dependency
     libgnutls28-dev \
     libevent-dev \
     libssl-dev \
@@ -26,9 +27,12 @@ RUN git clone https://github.com/christianrauch/camera_ros.git
 # Clone image_common (contains camera_info_manager)
 RUN git clone https://github.com/ros-perception/image_common.git
 
+# Clone vision_opencv (contains cv_bridge)
+RUN git clone -b humble https://github.com/ros-perception/vision_opencv.git  # Use ROS 2 Humble branch
+
 # Resolve dependencies and build
 WORKDIR /ros_ws
-RUN rosdep update && \  # Skip `rosdep init` (already done in base image)
+RUN rosdep update &&
     rosdep install -y --from-paths src --ignore-src --rosdistro humble --skip-keys=libcamera
 
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
