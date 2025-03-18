@@ -23,10 +23,14 @@ RUN git clone https://github.com/raspberrypi/libcamera.git
 # Clone camera_ros package
 RUN git clone https://github.com/christianrauch/camera_ros.git
 
+# Clone image_common (contains camera_info_manager)
+RUN git clone https://github.com/ros-perception/image_common.git
+
 # Resolve dependencies and build
 WORKDIR /ros_ws
-RUN rosdep init && rosdep update
-RUN rosdep install -y --from-paths src --ignore-src --rosdistro humble --skip-keys=libcamera
+RUN rosdep update && \  # Skip `rosdep init` (already done in base image)
+    rosdep install -y --from-paths src --ignore-src --rosdistro humble --skip-keys=libcamera
+
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     colcon build --event-handlers=console_direct+
 
