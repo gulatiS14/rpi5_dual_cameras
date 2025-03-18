@@ -1,14 +1,16 @@
 # Use ROS 2 Humble base image
 FROM ros:humble
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Enable universe repository and install system dependencies
+RUN sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list && \
+    apt-get update && apt-get install -y \
     git \
     python3-pip \
     python3-colcon-meson \
     libboost-dev \
-    libopencv-dev \          # OpenCV dependency
+    libboost-python1.74.0 \  # Explicitly install Boost.Python 1.74
     libgnutls28-dev \
+    libopencv-dev \          # OpenCV dependency
     libevent-dev \
     libssl-dev \
     libyaml-dev \
@@ -28,7 +30,7 @@ RUN git clone https://github.com/christianrauch/camera_ros.git
 RUN git clone https://github.com/ros-perception/image_common.git
 
 # Clone vision_opencv (contains cv_bridge)
-RUN git clone -b humble https://github.com/ros-perception/vision_opencv.git  # Use ROS 2 Humble branch
+RUN git clone -b humble https://github.com/ros-perception/vision_opencv.git
 
 # Resolve dependencies and build
 WORKDIR /ros_ws
